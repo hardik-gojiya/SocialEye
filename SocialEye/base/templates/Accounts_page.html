@@ -1,0 +1,8 @@
+{% include "Layout.html" %}
+
+{% block body %}
+    {% for user in users %}
+        <a href="{% url "profile"  user.id %}">{{user.username}}</a>
+        <hr>
+    {% endfor %}
+{% endblock %}

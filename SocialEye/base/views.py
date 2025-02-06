@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
 from .forms import CreateNewUser, CreatePost
-from .models import Post, Reel, Comment_For_Post, Comment_For_Reel
+from .models import Post, Reel, Comment_For_Post, Comment_For_Reel, Follow
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
@@ -14,7 +15,8 @@ def home(request):
     context = {"posts": posts, "comments": comments}
     return render(request, "home.html", context)
 
-#register
+
+# register
 def loginPage(request):
     form = AuthenticationForm()
     if request.method == "POST":
@@ -46,7 +48,8 @@ def logoutPage(request):
     logout(request)
     return redirect("home")
 
-#profile
+
+# profile
 def profilePage(request, pk):
     user = User.objects.get(id=pk)
     posts = Post.objects.filter(user=user).order_by("-created")
@@ -54,12 +57,18 @@ def profilePage(request, pk):
     context = {"user": user, "posts": posts, "reels": reels}
     return render(request, "profile.html", context)
 
-#post
+def allProfiles(request):
+    all_users = User.objects.all()
+    context = {"users" : all_users}
+    return render(request, "Accounts_page.html", context)
+
+
+# post
 def posts_page(request):
     posts = Post.objects.all().order_by("-created")
     context = {"posts": posts}
     return render(request, "posts.html", context)
-    
+
 
 def create_post_page(request):
     if request.method == "POST":
@@ -79,14 +88,15 @@ def delete_post(request, pk):
     return redirect("home")
 
 
-#reel
+# reel
+
 
 def ReelPage(request):
     reels = Reel.objects.all().order_by("-created")
     comments = Comment_For_Reel.objects.all().order_by("-created")
-    
+
     context = {"reels": reels, "comments": comments}
-    
+
     return render(request, "reel_page.html", context)
 
 
@@ -97,7 +107,9 @@ def Create_ReelPage(request):
         reel_file = request.FILES.get("reel_file")
         print(reel_file)
         description = request.POST.get("description")
-        reel_instance = Reel(user=user, title=title, reel=reel_file, description=description)
+        reel_instance = Reel(
+            user=user, title=title, reel=reel_file, description=description
+        )
         reel_instance.save()
         return redirect("reels")
     return render(request, "create_reel_page.html")
@@ -108,45 +120,64 @@ def delete_ReelPage(request, pk):
     reel.delete()
     return redirect("reels")
 
-#comment
+
+# comment
 def comment_for_post(request, pk):
-    post = get_object_or_404(Post,id=pk)
-    comments = Comment_For_Post.objects.filter(post=post).order_by("-created") 
-    
+    post = get_object_or_404(Post, id=pk)
+    comments = Comment_For_Post.objects.filter(post=post).order_by("-created")
+
     if request.method == "POST":
         comment = request.POST.get("comment").strip()
         if comment:
-            create_comment = Comment_For_Post(user=request.user, post=post, comment=comment)
+            create_comment = Comment_For_Post(
+                user=request.user, post=post, comment=comment
+            )
             create_comment.save()
-    
+
     for_c = "post"
     context = {"comments": comments, "for_c": for_c}
-    
-    return render(request, "comments_for.html", context )
+
+    return render(request, "comments_for.html", context)
+
 
 def comment_for_reel(request, pk):
-    reel = get_object_or_404(Reel,id=pk)
-    comments = Comment_For_Reel.objects.filter(reel=reel).order_by("-created") 
-    
+    reel = get_object_or_404(Reel, id=pk)
+    comments = Comment_For_Reel.objects.filter(reel=reel).order_by("-created")
+
     if request.method == "POST":
         comment = request.POST.get("comment").strip()
         if comment:
-            create_comment = Comment_For_Reel(user=request.user, reel=reel, comment=comment)
+            create_comment = Comment_For_Reel(
+                user=request.user, reel=reel, comment=comment
+            )
             create_comment.save()
-    
+
     for_c = "reel"
     context = {"comments": comments, "for_c": for_c}
-    
-    return render(request, "comments_for.html", context )
+
+    return render(request, "comments_for.html", context)
+
 
 def delete_comment_for_post(request, pk):
-    comment = get_object_or_404(Comment_For_Post,id=pk)
+    comment = get_object_or_404(Comment_For_Post, id=pk)
     comment.delete()
     return redirect(redirect(request.META.get("HTTP_REFERER", "home")))
-    
+
 
 def delete_comment_for_reel(request, pk):
-    comment = get_object_or_404(Comment_For_Reel,id=pk)
+    comment = get_object_or_404(Comment_For_Reel, id=pk)
     comment.delete()
     return redirect(redirect(request.META.get("HTTP_REFERER", "home")))
+
+
+def follow_unfollow(request, pk):
+    following_user = get_object_or_404(User, id=pk)
+    follow_obj, created = Follow.objects.get_or_create(
+        follower=request.user, following=following_user
+    )
     
+    if not created:  
+        follow_obj.delete()  
+        return JsonResponse({"message": "Unfollowed", "status": "unfollow"})
+    
+    return JsonResponse({"message": "followed", "status": "follow"})

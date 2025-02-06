@@ -8,6 +8,7 @@ urlpatterns = [
     path("logout/", views.logoutPage, name="logout"),
     path("register/", views.register, name="register"),
     path("profile/<int:pk>/", views.profilePage, name="profile"),
+    path("accounts/", views.allProfiles, name="accounts"),
     # post
     path("createpost/", views.create_post_page, name="createpost"),
     path("deletepost/<int:pk>/", views.delete_post, name="deletepost"),
@@ -21,4 +22,6 @@ urlpatterns = [
     path("deletecommentforpost/<int:pk>/", views.delete_comment_for_post, name="deletecommentforpost"),
     path("deletecommentforreel/<int:pk>/", views.delete_comment_for_reel, name="deletecommentforreel"),
     
+    
+    path("follow_unfollow/<int:pk>/", views.follow_unfollow, name="follow_unfollow"),
 ]

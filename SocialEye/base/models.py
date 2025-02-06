@@ -6,7 +6,7 @@ from django.core.validators import FileExtensionValidator
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
-    photo = models.ImageField(upload_to='static/post_photos/')
+    photo = models.ImageField(upload_to='static/post_photos/', validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'gif'])])
     description = models.TextField(max_length=300)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -40,3 +40,14 @@ class Comment_For_Reel(models.Model):
 
     def __str__(self):
         return self.comment
+    
+class Follow(models.Model):
+    following = models.ForeignKey(User, related_name="followers", on_delete=models.CASCADE)  
+    follower = models.ForeignKey(User, related_name="following", on_delete=models.CASCADE)  
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('follower', 'following')  # Prevent duplicate follows
+
+    def __str__(self):
+        return f"{self.follower} follows {self.following}"
