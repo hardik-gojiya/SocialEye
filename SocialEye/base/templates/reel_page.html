@@ -1,0 +1,24 @@
+{% extends "Layout.html" %}
+
+{% block body %}
+    <div id="reel-container" style="border: 2px;">
+        {% for reels in reels %}
+            <p>{{reels.title}}</p>
+            {% if reels.reel %}
+                <video width="320" height="240" muted controls >  
+                    <source src="{{ reels.reel.url }}" type="video/mp4">
+                </video>
+            {% else %}
+                <p>No video available</p>
+            {% endif %}
+            <p>{{reels.description}}</p>
+            {% if request.user == reels.user %}
+            <a href="{% url "deletereel" reels.id %}">delete</a>
+            {% endif %}
+            <a href="{% url "commentsforreel" reels.id %}">comments</a>
+            <hr>
+        {% endfor %}
+    </div>
+    
+{% endblock %}
+

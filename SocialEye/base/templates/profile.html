@@ -1,0 +1,13 @@
+{% include "Layout.html" %}
+
+{% block body %} 
+    {% if request.user.is_authenticated %}
+    <h1>{{user}}</h1>
+    <div>
+    {% include "posts.html" with posts=posts %}
+    </div>
+    <div>
+        {% include "reel_page.html" with reels=reels %}
+    </div>
+{% endif %}
+{% endblock %}

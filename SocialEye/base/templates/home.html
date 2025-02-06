@@ -1,0 +1,11 @@
+{% include "Layout.html" %}
+
+{% block title %}
+<title>Social Eye</title>
+{% endblock %}
+
+{% block body %}
+
+  <h1>Welcome to SocialEye</h1>
+  {% include "posts.html" with posts=posts comments=comments %}
+{% endblock %}

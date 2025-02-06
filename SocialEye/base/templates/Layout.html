@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% block title %}
+    <title>Social Eye</title>
+    {% endblock %}
+    <style>
+      img {
+        width: 300px;
+        height: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    {% block navbar %}
+    <nav>
+      <ul>
+        <li><a href="{% url "home" %}">Home</a></li>
+        {% if request.user.is_authenticated %}
+        <li><a href="{% url "createpost" %}">add post</a></li>
+        <li><a href="{% url "profile" request.user.id %}">profile</a></li>
+        <li><a href="{% url "logout" %}">Logout</a></li>
+        <li><a href="{% url "reels" %}">Reels</a></li>
+        <li><a href="{% url "createreel" %}">Create Reel</a></li>
+        
+        {% else %}
+        <li><a href="{% url "login" %}">Login</a></li>
+        <li><a href="{% url "register" %}">Register</a></li>
+        {% endif %}
+        
+      </ul>
+      <hr>
+    </nav>
+    {% endblock %} 
+
+    {% block body %}
+      
+    {% endblock %}
+
+  </body>
+</html>

@@ -1,0 +1,36 @@
+{% extends "Layout.html" %}
+
+{% block body %}
+    <a href="{{request.META.HTTP_REFERER}}">back</a>
+    {% if for_c == post  %}
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="text" id="comment" name="comment" placeholder="Comment">
+            <input type="submit" value="Comment">
+        </form>
+        {% for comment in comments %}
+        <a href="{% url "profile" comment.user.id %}" >{{comment.user}}</a>
+        <p>{{comment.comment}}</p>
+        {% if request.user == comment.user %}
+            <a href="{% url "deletecommentforpost" comment.id  %}">delete</a>
+        {% endif %}
+        
+        <hr>
+    {% endfor %}
+    {% else %}
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="text" id="comment" name="comment" placeholder="Comment">
+            <input type="submit" value="Comment">
+        </form>
+        {% for comment in comments %}
+            <a href="{% url "profile" comment.user.id %}" >{{comment.user}}</a>
+            <p>{{comment.comment}}</p>
+            {% if request.user == comment.user %}
+            <a href="{% url "deletecommentforreel" comment.id %}">delete</a>
+            {% endif %}
+            <hr>
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}

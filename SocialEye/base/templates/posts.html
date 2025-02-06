@@ -1,0 +1,15 @@
+p
+    {% for post in posts %}
+      <a href="{% url "profile" post.user.id %}">{{post.user}}</a>
+      <p>{{post.title}}</p>
+      <img src="{{post.photo.url}}" alt="img"  />
+      <p>{{post.description}}</p>
+      {% if request.user == post.user %}
+      <a href="{% url "deletepost" post.id %}">delete</a>
+      {% endif %}
+      
+      <a href="{% url "commentsforpost" post.id %}">comments</a>
+      <hr>
+      {% endfor %}
+      
+  
