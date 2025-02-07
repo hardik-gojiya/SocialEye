@@ -1,14 +1,30 @@
 {% include "Layout.html" %}
-{% block title %} <title>Social Eye / Register</title> {% endblock %}
-
-{% block navbar %}{% endblock %}
 
 {% block body %}
-<h1>Register</h1>
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Register" />
-</form>
-{% endblock %}
+<div class="flex flex-col items-center justify-center h-screen">
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md">
+        <h1 class="text-2xl font-bold text-white text-center">📝 Register</h1>
 
+        <form action="" method="post" class="mt-4 space-y-4">
+            {% csrf_token %}
+
+            <!-- Django Form Fields -->
+            <div class="space-y-2">
+                {{ form.as_p }}
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit"
+                class="w-full p-3 bg-green-500 hover:bg-green-600 rounded-lg text-white font-semibold transition">
+                ✅ Sign Up
+            </button>
+        </form>
+
+        <!-- Login Link -->
+        <p class="mt-4 text-center text-gray-400">
+            Already have an account? 
+            <a href="{% url 'login' %}" class="text-blue-400 hover:underline">Login</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

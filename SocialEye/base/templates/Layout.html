@@ -1,44 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block title %}
     <title>Social Eye</title>
     {% endblock %}
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      img {
-        width: 300px;
-        height: 300px;
-      }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1E1E1E;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #BB86FC;
+            border-radius: 10px;
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body class="bg-gray-900 text-white flex">
+    <!-- Sidebar Navigation -->
     {% block navbar %}
-    <nav>
-      <ul>
-        <li><a href="{% url "home" %}">Home</a></li>
-        {% if request.user.is_authenticated %}
-        <li><a href="{% url "createpost" %}">add post</a></li>
-        <li><a href="{% url "profile" request.user.id %}">profile</a></li>
-        <li><a href="{% url "logout" %}">Logout</a></li>
-        <li><a href="{% url "reels" %}">Reels</a></li>
-        <li><a href="{% url "createreel" %}">Create Reel</a></li>
-        <li><a href="{% url "accounts" %}">Accounts</a></li>
-        
-        {% else %}
-        <li><a href="{% url "login" %}">Login</a></li>
-        <li><a href="{% url "register" %}">Register</a></li>
-        {% endif %}
-        
-      </ul>
-      <hr>
+    <nav class="w-64 bg-gray-800 h-screen fixed p-5">
+        <ul class="space-y-4">
+            <li><a href="{% url 'home' %}" class="block p-2 rounded-md hover:bg-gray-700">🏠 Home</a></li>
+            {% if request.user.is_authenticated %}
+            <li><a href="{% url 'profile' request.user.id %}" class="block p-2 rounded-md hover:bg-gray-700">👤 Profile</a></li>
+            <li><a href="{% url 'createpost' %}" class="block p-2 rounded-md hover:bg-gray-700">➕ Add Post</a></li>
+            <li><a href="{% url 'reels' %}" class="block p-2 rounded-md hover:bg-gray-700">🎥 Reels</a></li>
+            <li><a href="{% url 'createreel' %}" class="block p-2 rounded-md hover:bg-gray-700">📹 Create Reel</a></li>
+            <li><a href="{% url 'accounts' %}" class="block p-2 rounded-md hover:bg-gray-700">📜 Accounts</a></li>
+            <li><a href="{% url 'logout' %}" class="block p-2 rounded-md text-red-400 hover:bg-gray-700">🚪 Logout</a></li>
+            {% else %}
+            <li><a href="{% url 'login' %}" class="block p-2 rounded-md hover:bg-gray-700">🔑 Login</a></li>
+            <li><a href="{% url 'register' %}" class="block p-2 rounded-md hover:bg-gray-700">📝 Register</a></li>
+            {% endif %}
+        </ul>
     </nav>
-    {% endblock %} 
-
-    {% block body %}
-      
     {% endblock %}
 
-  </body>
+    <!-- Main Content -->
+    <main class="p-6 ml-[404px]">
+        <div class="max-w-4xl">
+            {% block body %}
+            {% endblock %}
+        </div>
+    </main>
+</body>
 </html>

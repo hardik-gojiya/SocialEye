@@ -1,13 +1,35 @@
-{% extends "Layout.html" %}
+{% include "Layout.html" %}
 
 {% block body %}
-    <div>
-        <form action="" method="post" enctype="multipart/form-data">
+<div class="flex flex-col items-center p-6">
+    <!-- Reel Creation Form -->
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-lg">
+        <h1 class="text-2xl font-bold text-white text-center">📹 Create a New Reel</h1>
+
+        <form action="" method="post" enctype="multipart/form-data" class="mt-4 space-y-4">
             {% csrf_token %}
-            <input type="text" name="title" placeholder="Title" required>
-            <input type="file" name="reel_file" required>
-            <input type="text" name="description" placeholder="Description" required>
-            <input type="submit" value="Create Reel">
+
+            <!-- Reel Title -->
+            <input type="text" name="title" placeholder="Reel Title"
+                class="w-full p-3 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+            <!-- Upload Video -->
+            <div class="relative w-full">
+                <label class="block text-gray-300">Upload Video</label>
+                <input type="file" name="reel_file" accept="video/*"
+                    class="w-full p-3 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none">
+            </div>
+
+            <!-- Reel Description -->
+            <textarea name="description" placeholder="Write a caption..."
+                class="w-full p-3 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+
+            <!-- Submit Button -->
+            <button type="submit"
+                class="w-full p-3 bg-blue-500 hover:bg-blue-600 rounded-lg text-white font-semibold transition">
+                📤 Upload Reel
+            </button>
         </form>
     </div>
+</div>
 {% endblock %}

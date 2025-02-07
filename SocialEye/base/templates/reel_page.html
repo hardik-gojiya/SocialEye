@@ -1,24 +1,41 @@
-{% extends "Layout.html" %}
+{% include "Layout.html" %}
 
 {% block body %}
-    <div id="reel-container" style="border: 2px;">
+<div class="flex flex-col items-center p-6">
+    <h1 class="text-3xl font-bold text-white mb-6">🎥 Explore Reels</h1>
+
+    <div class="w-full max-w-3xl space-y-6">
         {% for reels in reels %}
-            <p>{{reels.title}}</p>
+        <div class="bg-gray-800 p-4 rounded-lg shadow-lg hover:shadow-xl transition">
+            <p class="text-lg font-semibold text-white">{{ reels.title }}</p>
+
             {% if reels.reel %}
-                <video width="320" height="240" muted controls >  
+            <div class="mt-3">
+                <video class="w-full rounded-lg hover:shadow-md transition" muted controls>
                     <source src="{{ reels.reel.url }}" type="video/mp4">
                 </video>
+            </div>
             {% else %}
-                <p>No video available</p>
+            <p class="text-gray-400">No video available</p>
             {% endif %}
-            <p>{{reels.description}}</p>
+
+            <p class="text-gray-300 mt-2">{{ reels.description }}</p>
+
+            <!-- Delete Button -->
             {% if request.user == reels.user %}
-            <a href="{% url "deletereel" reels.id %}">delete</a>
+            <a href="{% url 'deletereel' reels.id %}"
+                class="block mt-3 px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-center rounded-lg transition">
+                ❌ Delete Reel
+            </a>
             {% endif %}
-            <a href="{% url "commentsforreel" reels.id %}">comments</a>
-            <hr>
+
+            <!-- Comments Button -->
+            <a href="{% url 'commentsforreel' reels.id %}"
+                class="block mt-3 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-center rounded-lg transition">
+                💬 View Comments
+            </a>
+        </div>
         {% endfor %}
     </div>
-    
+</div>
 {% endblock %}
-

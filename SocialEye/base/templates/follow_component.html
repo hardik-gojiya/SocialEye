@@ -1,0 +1,32 @@
+
+{% block body %}
+<form action="{% url "follow_unfollow" user.id %}" method="post" id="follow-form">
+    {% csrf_token %}
+    <button type="submit" id="followbtn">
+        {% if request.user in user.following.all %}
+        unfollow
+        {% else %}
+        follow
+        {% endif %}
+    </button>
+</form>
+<script>
+    document.getElementById("follow-form").addEventListener("submit", function(event) {
+        event.preventDefault();
+        
+        let formData = new FormData(this);
+        fetch(this.action, {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-CSRFToken": formData.get("csrfmiddlewaretoken"),
+            },
+            credentials: "same-origin"
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("followbtn").innerText = data.status === "follow" ? "Unfollow" : "Follow";
+        });
+    });
+</script>
+{% endblock %}
