@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     "base",
     "taggit",
     'tailwind',
-    "theme"
+    "theme",
+    'livereload',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +53,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'livereload.middleware.LiveReloadScript',
 ]
 
 ROOT_URLCONF = "SocialEye.urls"

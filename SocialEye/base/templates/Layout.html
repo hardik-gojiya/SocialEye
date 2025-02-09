@@ -1,53 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% block title %}
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Social Eye</title>
-    {% endblock %}
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css"
+      rel="stylesheet"
+    />
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1E1E1E;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #BB86FC;
-            border-radius: 10px;
-        }
-    </style>
-</head>
-<body class="bg-gray-900 text-white flex">
-    <!-- Sidebar Navigation -->
-    {% block navbar %}
-    <nav class="w-64 bg-gray-800 h-screen fixed p-5">
-        <ul class="space-y-4">
-            <li><a href="{% url 'home' %}" class="block p-2 rounded-md hover:bg-gray-700">🏠 Home</a></li>
-            {% if request.user.is_authenticated %}
-            <li><a href="{% url 'profile' request.user.id %}" class="block p-2 rounded-md hover:bg-gray-700">👤 Profile</a></li>
-            <li><a href="{% url 'createpost' %}" class="block p-2 rounded-md hover:bg-gray-700">➕ Add Post</a></li>
-            <li><a href="{% url 'reels' %}" class="block p-2 rounded-md hover:bg-gray-700">🎥 Reels</a></li>
-            <li><a href="{% url 'createreel' %}" class="block p-2 rounded-md hover:bg-gray-700">📹 Create Reel</a></li>
-            <li><a href="{% url 'accounts' %}" class="block p-2 rounded-md hover:bg-gray-700">📜 Accounts</a></li>
-            <li><a href="{% url 'logout' %}" class="block p-2 rounded-md text-red-400 hover:bg-gray-700">🚪 Logout</a></li>
-            {% else %}
-            <li><a href="{% url 'login' %}" class="block p-2 rounded-md hover:bg-gray-700">🔑 Login</a></li>
-            <li><a href="{% url 'register' %}" class="block p-2 rounded-md hover:bg-gray-700">📝 Register</a></li>
-            {% endif %}
-        </ul>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+  </head>
+  <body class="bg-base-300 min-h-screen flex">
+    <nav class="w-64 bg-base-200 h-screen fixed left-0 top-0 p-5 shadow-xl">
+      <div class="mb-10 text-center">
+        <h1 class="text-2xl font-bold text-primary">Social Eye</h1>
+      </div>
+      <ul class="menu p-4 w-full space-y-2">
+        {% if request.user.is_authenticated %}
+        <li>
+          <a
+            href="{% url 'home' %}"
+            class="hover:bg-base-100 hover:text-primary"
+          >
+            <i class="fas fa-home mr-3"></i> Home
+          </a>
+        </li>
+        <li>
+          <a
+            href="{% url 'profile' request.user.id %}"
+            class="hover:bg-base-100 hover:text-primary"
+          >
+            <i class="fas fa-user mr-3"></i> Profile
+          </a>
+        </li>
+        <li>
+          <a
+            href="{% url 'createpost' %}"
+            class="hover:bg-base-100 hover:text-primary"
+          >
+            <i class="fas fa-plus-circle mr-3"></i> Add Post
+          </a>
+        </li>
+        <li>
+          <a
+            href="{% url 'reels' %}"
+            class="hover:bg-base-100 hover:text-primary"
+          >
+            <i class="fas fa-film mr-3"></i> Reels
+          </a>
+        </li>
+        <li>
+          <a
+            href="{% url 'createreel' %}"
+            class="hover:bg-base-100 hover:text-primary"
+          >
+            <i class="fas fa-video mr-3"></i> Create Reel
+          </a>
+        </li>
+        <li>
+          <a
+            href="{% url 'accounts' %}"
+            class="hover:bg-base-100 hover:text-primary"
+          >
+            <i class="fas fa-users mr-3"></i> Accounts
+          </a>
+        </li>
+        <li>
+          <a
+            href="{% url 'logout' %}"
+            class="hover:bg-base-100 text-error hover:bg-error hover:text-white"
+          >
+            <i class="fas fa-sign-out-alt mr-3"></i> Logout
+          </a>
+        </li>
+        {% else %}
+        <li>
+          <a
+            href="{% url 'login' %}"
+            class="hover:bg-base-100 text-error hover:bg-error hover:text-white"
+          >
+            <i class="fas fa-sign-out-alt mr-3"></i> Login
+          </a>
+        </li>
+        <li>
+          <a
+            href="{% url 'register' %}"
+            class="hover:bg-base-100 text-error hover:bg-error hover:text-white"
+          >
+            <i class="fas fa-sign-out-alt mr-3"></i>Register
+          </a>
+        </li>
+        {% endif %}
+      </ul>
     </nav>
-    {% endblock %}
 
-    <!-- Main Content -->
-    <main class="p-6 ml-[404px]">
-        <div class="max-w-4xl">
-            {% block body %}
-            {% endblock %}
+    <main class="p-6 ml-56">
+      <div class="max-w-4xl mx-auto">
+        <div class="card bg-base-100 shadow-xl">
+            {% block body %} {% endblock %}
+          
         </div>
+      </div>
     </main>
-</body>
+  </body>
 </html>

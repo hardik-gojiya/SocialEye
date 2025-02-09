@@ -8,19 +8,16 @@
         <form action="" method="post" class="mt-4 space-y-4">
             {% csrf_token %}
 
-            <!-- Django Form Fields -->
             <div class="space-y-2">
                 {{ form.as_p }}
             </div>
 
-            <!-- Submit Button -->
             <button type="submit"
                 class="w-full p-3 bg-blue-500 hover:bg-blue-600 rounded-lg text-white font-semibold transition">
                 🔓 Login
             </button>
         </form>
 
-        <!-- Register Link -->
         <p class="mt-4 text-center text-gray-400">
             Don't have an account? 
             <a href="{% url 'register' %}" class="text-blue-400 hover:underline">Sign Up</a>

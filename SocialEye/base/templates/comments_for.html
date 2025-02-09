@@ -1,36 +1,163 @@
-{% extends "Layout.html" %}
+{% include "Layout.html" %}
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comments Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="bg-base-200 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-2xl">
+        <div class="mb-6">
+            <button onclick="window.history.back()" class="btn btn-ghost">
+                <i class="fas fa-arrow-left mr-2"></i> Back
+            </button>
+        </div>
 
-{% block body %}
-    <a href="{{request.META.HTTP_REFERER}}">back</a>
-    {% if for_c == post  %}
-        <form action="" method="post">
-            {% csrf_token %}
-            <input type="text" id="comment" name="comment" placeholder="Comment">
-            <input type="submit" value="Comment">
-        </form>
-        {% for comment in comments %}
-        <a href="{% url "profile" comment.user.id %}" >{{comment.user}}</a>
-        <p>{{comment.comment}}</p>
-        {% if request.user == comment.user %}
-            <a href="{% url "deletecommentforpost" comment.id  %}">delete</a>
-        {% endif %}
         
-        <hr>
-    {% endfor %}
-    {% else %}
-        <form action="" method="post">
-            {% csrf_token %}
-            <input type="text" id="comment" name="comment" placeholder="Comment">
-            <input type="submit" value="Comment">
-        </form>
-        {% for comment in comments %}
-            <a href="{% url "profile" comment.user.id %}" >{{comment.user}}</a>
-            <p>{{comment.comment}}</p>
-            {% if request.user == comment.user %}
-            <a href="{% url "deletecommentforreel" comment.id %}">delete</a>
-            {% endif %}
-            <hr>
-        {% endfor %}
-    {% endif %}
 
-{% endblock %}
+        {% if for_c == post  %}
+        <div class="space-y-4">
+            <form class="mb-6" method="post">
+                {% csrf_token %}
+                <div class="form-control">
+                    <div class="input-group">
+                        <input 
+                            type="text" 
+                            id="comment"
+                            placeholder="Add a comment..." 
+                            class="input input-bordered w-full" 
+                            name="comment"
+                        />
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane mr-2"></i> Comment
+                        </button>
+                    </div>
+                </div>
+            </form>
+            {% for comment in comments %}
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="avatar">
+                                <div class="w-10 rounded-full">
+                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user1" alt="User Avatar" />
+                                </div>
+                            </div>
+                            <a href="{% url "profile" comment.user.id %}" class="font-semibold text-primary hover:underline">
+                                {{comment.user}}
+                            </a>
+                        </div>
+                        
+                        {% if request.user == comment.user %}
+                        <div class="dropdown dropdown-end">
+                            <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </div>
+                            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                <li>
+                                    <a href="{% url "deletecommentforreel" comment.id  %}" class="text-error">
+                                        <i class="fas fa-trash mr-2"></i> Delete Comment
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <p class="mt-2 text-base-content">
+                        {{comment.comment}}
+                    </p>
+                    
+                    <div class="flex items-center justify-between mt-3">
+                        <span class="text-xs text-base-content opacity-50">
+                            {{comment.created}}
+                        </span>
+                        <div class="flex items-center space-x-2">
+                            <button class="btn btn-ghost btn-xs btn-circle">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                            <span class="text-xs">3 Likes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="space-y-4">
+            <form class="mb-6" method="post">
+                {% csrf_token %}
+                <div class="form-control">
+                    <div class="input-group">
+                        <input 
+                            type="text" 
+                            id="comment"
+                            placeholder="Add a comment..." 
+                            class="input input-bordered w-full" 
+                            name="comment"
+                        />
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane mr-2"></i> Comment
+                        </button>
+                    </div>
+                </div>
+            </form>
+            {% for comment in comments %}
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="avatar">
+                                <div class="w-10 rounded-full">
+                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user1" alt="User Avatar" />
+                                </div>
+                            </div>
+                            <a href="{% url "profile" comment.user.id %}" class="font-semibold text-primary hover:underline">
+                                {{comment.user}}
+                            </a>
+                        </div>
+                        
+                        {% if request.user == comment.user %}
+                        <div class="dropdown dropdown-end">
+                            <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </div>
+                            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                <li>
+                                    <a href="{% url "deletecommentforpost" comment.id %}" class="text-error">
+                                        <i class="fas fa-trash mr-2"></i> Delete Comment
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <p class="mt-2 text-base-content">
+                        {{comment.comment}}
+                    </p>
+                    
+                    <div class="flex items-center justify-between mt-3">
+                        <span class="text-xs text-base-content opacity-50">
+                            {{comment.created}}
+                        </span>
+                        <div class="flex items-center space-x-2">
+                            <button class="btn btn-ghost btn-xs btn-circle">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                            <span class="text-xs">3 Likes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

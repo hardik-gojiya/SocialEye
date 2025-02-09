@@ -1,41 +1,80 @@
-{% include "Layout.html" %}
+{% if hide %}
+    <style>
+        .navbar {
+            display: none;
+        }
+    </style>
+    {% else %}
+    {% include "Layout.html" %}
+{% endif %}
 
-{% block body %}
-<div class="flex flex-col items-center p-6">
-    <h1 class="text-3xl font-bold text-white mb-6">🎥 Explore Reels</h1>
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reels Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="bg-base-200 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-3xl mx-auto space-y-6">
+                {% if hide %}
+                {% else %}
+                <h1 class="text-3xl font-bold text-center mb-6 text-base-content">
+                <i class="fas fa-film mr-2"></i> Explore Reels
+                </h1>
+                {% endif %}
+            
 
-    <div class="w-full max-w-3xl space-y-6">
-        {% for reels in reels %}
-        <div class="bg-gray-800 p-4 rounded-lg shadow-lg hover:shadow-xl transition">
-            <p class="text-lg font-semibold text-white">{{ reels.title }}</p>
+            {% for reels in reels %}
+            <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
+                <div class="card-body">
+                    <div class="flex items-center space-x-3 mb-2">
+                        <div class="avatar">
+                            <div class="w-10 rounded-full">
+                                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user1" alt="User Avatar" />
+                            </div>
+                        </div>
+                        <a href="{% url "profile" reels.user.id %}" class="card-title text-primary hover:underline">@{{reels.user}}</a>
+                    </div>
 
-            {% if reels.reel %}
-            <div class="mt-3">
-                <video class="w-full rounded-lg hover:shadow-md transition" muted controls>
-                    <source src="{{ reels.reel.url }}" type="video/mp4">
-                </video>
+                    <h3 class="text-lg font-semibold mb-2">{{ reels.title }}</h3>
+
+                    <figure class="mb-3">
+                        <video class="w-[500px] h-[700px] rounded-lg object-cover" controls>
+                            <source src="{{ reels.reel.url }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </figure>
+
+                    <p class="text-base-content mb-3">{{ reels.description }}</p>
+
+                    <div class="card-actions justify-between items-center">
+                        <div class="flex space-x-3">
+                            <a href="{% url 'commentsforreel' reels.id %}" class="btn btn-ghost btn-sm text-primary">
+                                <i class="fas fa-comment mr-2"></i>Comments
+                            </a>
+                            {% if request.user == reels.user %}
+                            <a href="{% url 'deletereel' reels.id %}" class="btn btn-ghost btn-sm text-error">
+                                <i class="fas fa-trash mr-2"></i>Delete
+                            </a>
+                            {% endif %}
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button class="btn btn-ghost btn-sm btn-circle">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                            <span class="text-sm text-base-content">42 Likes</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            {% else %}
-            <p class="text-gray-400">No video available</p>
-            {% endif %}
-
-            <p class="text-gray-300 mt-2">{{ reels.description }}</p>
-
-            <!-- Delete Button -->
-            {% if request.user == reels.user %}
-            <a href="{% url 'deletereel' reels.id %}"
-                class="block mt-3 px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-center rounded-lg transition">
-                ❌ Delete Reel
-            </a>
-            {% endif %}
-
-            <!-- Comments Button -->
-            <a href="{% url 'commentsforreel' reels.id %}"
-                class="block mt-3 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-center rounded-lg transition">
-                💬 View Comments
-            </a>
+            {% endfor %}
+        
         </div>
-        {% endfor %}
     </div>
-</div>
-{% endblock %}
+</body>
+</html>

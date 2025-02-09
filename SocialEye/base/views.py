@@ -161,13 +161,13 @@ def comment_for_reel(request, pk):
 def delete_comment_for_post(request, pk):
     comment = get_object_or_404(Comment_For_Post, id=pk)
     comment.delete()
-    return redirect(redirect(request.META.get("HTTP_REFERER", "home")))
+    return redirect(request.META.get("HTTP_REFERER", "home"))
 
 
 def delete_comment_for_reel(request, pk):
     comment = get_object_or_404(Comment_For_Reel, id=pk)
     comment.delete()
-    return redirect(redirect(request.META.get("HTTP_REFERER", "home")))
+    return redirect(request.META.get("HTTP_REFERER", "home"))
 
 
 def follow_unfollow(request, pk):
