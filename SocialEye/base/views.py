@@ -4,6 +4,7 @@ from .forms import CreateNewUser, CreatePost
 from .models import Post, Reel, Comment_For_Post, Comment_For_Reel, Follow
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.paginator import Paginator
 
@@ -18,18 +19,23 @@ def home(request):
 
 # register
 def loginPage(request):
-    form = AuthenticationForm()
+    if request.user.is_authenticated:
+        return redirect("home")  
+
     if request.method == "POST":
-        form = AuthenticationForm(request, request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password")
-            user = authenticate(username=username, password=password)
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(request, username=username, password=password)
+        print(user)
+
+        if user is not None:
             login(request, user)
             return redirect("home")
+        else:
+            print(request, "Invalid username or password")
 
-    context = {"form": form}
-    return render(request, "login.html", context)
+    return render(request, "login.html")
 
 
 def register(request):
@@ -44,12 +50,14 @@ def register(request):
     return render(request, "register.html", context)
 
 
+@login_required()
 def logoutPage(request):
     logout(request)
     return redirect("home")
 
 
 # profile
+@login_required(login_url="login")
 def profilePage(request, pk):
     user = User.objects.get(id=pk)
     posts = Post.objects.filter(user=user).order_by("-created")
@@ -57,19 +65,23 @@ def profilePage(request, pk):
     context = {"user": user, "posts": posts, "reels": reels}
     return render(request, "profile.html", context)
 
+
+@login_required(login_url="login")
 def allProfiles(request):
     all_users = User.objects.all()
-    context = {"users" : all_users}
+    context = {"users": all_users}
     return render(request, "Accounts_page.html", context)
 
 
 # post
+@login_required(login_url="login")
 def posts_page(request):
     posts = Post.objects.all().order_by("-created")
     context = {"posts": posts}
     return render(request, "posts.html", context)
 
 
+@login_required(login_url="login")
 def create_post_page(request):
     if request.method == "POST":
         user = request.user
@@ -82,6 +94,7 @@ def create_post_page(request):
     return render(request, "createpost.html")
 
 
+@login_required(login_url="login")
 def delete_post(request, pk):
     post = Post.objects.get(id=pk)
     post.delete()
@@ -91,6 +104,7 @@ def delete_post(request, pk):
 # reel
 
 
+@login_required(login_url="login")
 def ReelPage(request):
     reels = Reel.objects.all().order_by("-created")
     comments = Comment_For_Reel.objects.all().order_by("-created")
@@ -100,6 +114,7 @@ def ReelPage(request):
     return render(request, "reel_page.html", context)
 
 
+@login_required(login_url="login")
 def Create_ReelPage(request):
     if request.method == "POST":
         user = request.user
@@ -115,6 +130,7 @@ def Create_ReelPage(request):
     return render(request, "create_reel_page.html")
 
 
+@login_required(login_url="login")
 def delete_ReelPage(request, pk):
     reel = Reel.objects.get(id=pk)
     reel.delete()
@@ -122,6 +138,7 @@ def delete_ReelPage(request, pk):
 
 
 # comment
+@login_required(login_url="login")
 def comment_for_post(request, pk):
     post = get_object_or_404(Post, id=pk)
     comments = Comment_For_Post.objects.filter(post=post).order_by("-created")
@@ -140,6 +157,7 @@ def comment_for_post(request, pk):
     return render(request, "comments_for.html", context)
 
 
+@login_required(login_url="login")
 def comment_for_reel(request, pk):
     reel = get_object_or_404(Reel, id=pk)
     comments = Comment_For_Reel.objects.filter(reel=reel).order_by("-created")
@@ -158,26 +176,29 @@ def comment_for_reel(request, pk):
     return render(request, "comments_for.html", context)
 
 
+@login_required(login_url="login")
 def delete_comment_for_post(request, pk):
     comment = get_object_or_404(Comment_For_Post, id=pk)
     comment.delete()
     return redirect(request.META.get("HTTP_REFERER", "home"))
 
 
+@login_required(login_url="login")
 def delete_comment_for_reel(request, pk):
     comment = get_object_or_404(Comment_For_Reel, id=pk)
     comment.delete()
     return redirect(request.META.get("HTTP_REFERER", "home"))
 
 
+@login_required(login_url="login")
 def follow_unfollow(request, pk):
     following_user = get_object_or_404(User, id=pk)
     follow_obj, created = Follow.objects.get_or_create(
         follower=request.user, following=following_user
     )
-    
-    if not created:  
-        follow_obj.delete()  
+
+    if not created:
+        follow_obj.delete()
         return JsonResponse({"message": "Unfollowed", "status": "unfollow"})
-    
+
     return JsonResponse({"message": "followed", "status": "follow"})

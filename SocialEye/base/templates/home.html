@@ -13,12 +13,16 @@
 <body class="bg-base-200 min-h-screen">
     <div class="container mx-auto px-4">
         
-
+        {% if request.user.is_authenticated %}
         <div class="flex flex-col items-center p-6">
             <h1 class="text-3xl font-bold text-primary mb-6">👁️ SocialEye</h1>
 
           {% include "posts.html" with posts=posts comments=comments %}
         </div>
+        {% else %}
+        
+        {% endif %}
+        
     </div>
 </body>
 </html>

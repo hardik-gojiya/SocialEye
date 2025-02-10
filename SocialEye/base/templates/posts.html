@@ -1,46 +1,53 @@
+<div class="w-full max-w-3xl space-y-6">
+    {% for post in posts %}
+    <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
+        <div class="card-body">
+            <div class="flex items-center space-x-3 mb-2">
+                <div class="avatar">
+                    <div class="w-10 rounded-full">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user1" alt="User Avatar" />
+                    </div>
+                </div>
+                <a href="{% url 'profile' post.user.id %}" class="card-title text-primary hover:underline">
+                    {{ post.user }}
+                </a>
+            </div>
 
-    <div class="w-full max-w-3xl space-y-6">
-        {% for post in posts %}
-        <div class="card bg-base-100 shadow-xl">
-          <div class="card-body">
-              <div class="flex items-center space-x-3 mb-2">
-                  <div class="avatar">
-                      <div class="w-10 rounded-full">
-                          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user1" alt="User Avatar" />
-                      </div>
-                  </div>
-                  <a href="{% url 'profile' post.user.id %}" class="card-title text-primary hover:underline">{{ post.user }}</a>
-              </div>
-              
-              <h3 class="text-lg font-semibold mb-2">{{ post.title }}</h3>
-              
-              <figure class="mb-3">
-                  <img src="{{ post.photo.url }}" alt="Post Image" class="rounded-lg max-h-[60vh] max-w-[60vh] object-cover" />
-              </figure>
-              
-              <p class="text-base-content mb-3">{{ post.description }}</p>
-              
-              <div class="card-actions justify-between items-center">
-                  <div class="flex space-x-3">
-                      <a href="{% url 'commentsforpost' post.id %}" class="btn btn-ghost btn-sm text-primary">
-                          <i class="fas fa-comment mr-2"></i>Comments
-                      </a>
-                      {% if request.user == post.user %}
-                      <a href="{% url "deletepost" post.id %}" class="btn btn-ghost btn-sm text-error">
-                          <i class="fas fa-trash mr-2"></i>Delete
-                      </a>
-                      {% endif %}
-                  </div>
-                  <div class="flex items-center space-x-2">
-                      <button class="btn btn-ghost btn-sm btn-circle">
-                          <i class="fas fa-heart"></i>
-                      </button>
-                      <span class="text-sm text-base-content">42 Likes</span>
-                  </div>
-              </div>
-          </div>
-        
-      </div>
-      {% endfor %}
+            <h3 class="text-lg font-semibold mb-2">{{ post.title }}</h3>
+
+            {% if post.photo %}
+            <figure class="mb-3">
+                <img src="{{ post.photo.url }}" alt="Post Image" class="rounded-lg max-h-[60vh] max-w-full object-cover" />
+            </figure>
+            {% endif %}
+
+            <p class="text-base-content mb-3">{{ post.description }}</p>
+
+            <div class="card-actions flex-wrap justify-between items-center">
+                <div class="flex space-x-3 items-center">
+                    <a href="{% url 'commentsforpost' post.id %}" class="btn btn-ghost btn-sm text-primary">
+                        <i class="fas fa-comment mr-2"></i> Comments
+                    </a>
+                    
+                    <div class="flex items-center space-x-1">
+                        <button class="btn btn-ghost btn-sm btn-circle">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <span class="text-sm text-base-content">42 Likes</span>
+                    </div>
+                </div>
+
+                <div class="text-sm text-base-content">
+                    {{ post.created|timesince }} ago
+                </div>
+
+                {% if request.user == post.user %}
+                <a href="{% url 'deletepost' post.id %}" class="btn btn-ghost btn-sm text-error">
+                    <i class="fas fa-trash mr-2"></i> Delete
+                </a>
+                {% endif %}
+            </div>
+        </div>
     </div>
-  
+    {% endfor %}
+</div>

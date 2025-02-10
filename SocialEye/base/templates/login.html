@@ -1,27 +1,129 @@
 {% include "Layout.html" %}
 
 {% block body %}
-<div class="flex flex-col items-center justify-center h-screen">
-    <div class="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md">
-        <h1 class="text-2xl font-bold text-white text-center">🔑 Login</h1>
+<div class="flex items-center justify-center min-h-screen p-4 lg:ml-[10vw] sm:ml-[20vw]">
+    <div class="card md:w-[30vw] sm:w-[50vw] bg-base-100 shadow-xl h-auto">
+        <div class="card-body">
+            <h1 class="text-2xl font-bold text-center text-primary mb-6">🔑 Login</h1>
 
-        <form action="" method="post" class="mt-4 space-y-4">
-            {% csrf_token %}
+            <form class="space-y-4" method="post" >
+                {% csrf_token %}
 
-            <div class="space-y-2">
-                {{ form.as_p }}
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">username</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        name="username" 
+                        placeholder="Enter your username" 
+                        class="input input-bordered w-full"
+                        required
+                    >
+                </div>
+
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Password</span>
+                    </label>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        placeholder="Enter your password" 
+                        class="input input-bordered w-full"
+                        required
+                    >
+                    <label class="label">
+                        <a href="#" class="label-text-alt link link-hover">Forgot password?</a>
+                    </label>
+                </div>
+
+                <div class="form-control mt-6">
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary"
+                    >
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        Login
+                    </button>
+                </div>
+            </form>
+
+            <div class="text-center mt-4">
+                <p class="text-base-content">
+                    Don't have an account? 
+                    <a href="{% url "register" %}" class="link link-primary">Register</a>
+                </p>
             </div>
-
-            <button type="submit"
-                class="w-full p-3 bg-blue-500 hover:bg-blue-600 rounded-lg text-white font-semibold transition">
-                🔓 Login
-            </button>
-        </form>
-
-        <p class="mt-4 text-center text-gray-400">
-            Don't have an account? 
-            <a href="{% url 'register' %}" class="text-blue-400 hover:underline">Sign Up</a>
-        </p>
+        </div>
     </div>
 </div>
 {% endblock %}
+{% comment %} <!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-base-200 min-h-screen flex items-center justify-center">
+    <div class="card w-full max-w-md bg-base-100 shadow-xl">
+        <div class="card-body">
+            <h1 class="text-2xl font-bold text-center text-primary mb-6">🔑 Login</h1>
+
+            <form class="space-y-4" method="post" >
+                {% csrf_token %}
+
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">username</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        name="username" 
+                        placeholder="Enter your email" 
+                        class="input input-bordered w-full"
+                        required
+                    >
+                </div>
+
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Password</span>
+                    </label>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        placeholder="Enter your password" 
+                        class="input input-bordered w-full"
+                        required
+                    >
+                    <label class="label">
+                        <a href="#" class="label-text-alt link link-hover">Forgot password?</a>
+                    </label>
+                </div>
+
+                <div class="form-control mt-6">
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary"
+                    >
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        Login
+                    </button>
+                </div>
+            </form>
+
+            <div class="text-center mt-4">
+                <p class="text-base-content">
+                    Don't have an account? 
+                    <a href="{% url "register" %}" class="link link-primary">Register</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html> {% endcomment %}

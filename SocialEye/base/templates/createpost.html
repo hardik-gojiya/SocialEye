@@ -1,31 +1,55 @@
 {% include "Layout.html" %}
 
 {% block body %}
-<div class="flex flex-col items-center p-6">
-    <!-- Post Creation Form -->
-    <div class="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-lg">
-        <h1 class="text-2xl font-bold text-white text-center">➕ Create a New Post</h1>
 
-        <form action="" method="post" enctype="multipart/form-data" class="mt-4 space-y-4">
+<div class="flex items-center justify-center min-h-screen p-4 lg::ml-[10vw] sm:ml-[20vw]">
+    <div class="card w-full max-w-lg bg-base-100 shadow-xl p-6">
+        <h1 class="text-2xl font-bold text-center text-primary mb-6">➕ Create a New Post</h1>
+
+        <form class="space-y-4 w-full" action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
-            <!-- Post Title -->
-            <input type="text" name="title" placeholder="Title"
-                class="w-full p-3 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div class="form-control">
+                <input 
+                    type="text" 
+                    name="title" 
+                    placeholder="Title" 
+                    class="input input-bordered w-full"
+                    required
+                >
+            </div>
 
-            <!-- Upload Image -->
-            <input type="file" name="photo"
-                class="w-full p-3 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Upload Image</span>
+                </label>
+                <input 
+                    type="file" 
+                    name="photo" 
+                    class="file-input file-input-bordered w-full"
+                    accept="image/*"
+                    required
+                />
+            </div>
 
-            <!-- Post Description -->
-            <textarea name="description" placeholder="Write a caption..."
-                class="w-full p-3 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+            <div class="form-control">
+                <textarea 
+                    name="description" 
+                    class="textarea textarea-bordered h-24 w-full" 
+                    placeholder="Write a caption..."
+                    required
+                ></textarea>
+            </div>
 
-            <!-- Submit Button -->
-            <button type="submit"
-                class="w-full p-3 bg-blue-500 hover:bg-blue-600 rounded-lg text-white font-semibold transition">
-                📤 Post
-            </button>
+            <div class="form-control mt-6">
+                <button 
+                    type="submit" 
+                    class="btn btn-primary w-full"
+                >
+                    <i class="fas fa-paper-plane mr-2"></i>
+                    Post
+                </button>
+            </div>
         </form>
     </div>
 </div>
